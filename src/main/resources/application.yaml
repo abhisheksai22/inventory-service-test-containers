@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: inventory-service
+
+#postgres conf
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inventory_db
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#validation
+  messages:
+    basename: validation
+    encoding: UTF-8
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  cache:
+    type: redis
+
+
+##circuit breaker and retry conf
+#resilience4j:
+#  retry:
+#    instances:
+#      gPayRetry:
+#        max-attempts: 3
+#        wait-duration: 2s
+#
+#      phonePeRetry:
+#        max-attempts: 2
+#        wait-duration: 1s
+#
+#  circuitbreaker:
+#    instances:
+#      gPayCB:
+#        failure-rate-threshold: 50
+#        wait-duration-in-open-state: 10s
+#        sliding-window-size: 10
+#
+#      phonePeCB:
+#        failure-rate-threshold: 40
+#        wait-duration-in-open-state: 15s
+#        sliding-window-size: 10
+
+#actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+#Eureka client configuration
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+logging:
+  level:
+    root: INFO
+    com.abhi.orders: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [x-request-id=%X{xRequestId}] - %msg%n"
